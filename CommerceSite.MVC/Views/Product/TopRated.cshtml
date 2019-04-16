@@ -1,0 +1,40 @@
+﻿@model CommerceSite.MVC.Models.TopRatedProductViewModel
+
+@for(int i = 0; i < Model.Products.Count; i++)
+{
+    int Discount = 0;
+    decimal discountPrice = 0;
+    <div class="product product-widget">
+        <div class="product-thumb">
+            <img src="@Url.Content(Model.Products[i].Image)" alt="">
+        </div>
+        <div class="product-body">
+            <h2 class="product-name"><a href="@Url.Action("ProductDetail","Product")">@Model.Products[i].ProductName</a></h2>
+            <h3 class="product-price">
+                @if (Discount != 0)
+                {
+                    discountPrice = ((Model.Products[i].UnitPrice / 100) * (100 - Discount));
+                    <span>@discountPrice</span>
+                    <del class="product-old-price">@Model.Products[i].UnitPrice</del>
+                }
+                else
+                {
+                    <span>@Model.Products[i].UnitPrice</span>
+                }
+            </h3>
+            <div class="product-rating">
+                @{
+                    
+                    for (int j = 0; j < Model.Scores[i]; j++)
+                    {
+                        <i class="fa fa-star"></i>
+                    }
+                    for (int j = 0; j < 5 - Model.Scores[i]; j++)
+                    {
+                        <i class="fa fa-star-o empty"></i>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}

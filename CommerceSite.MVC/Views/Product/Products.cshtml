@@ -1,0 +1,315 @@
+﻿@model CommerceSite.MVC.Models.ProductViewModel
+@{
+    /**/
+
+    ViewBag.Title = "Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div id="aside" class="col-md-3">
+                <div class="aside">
+                    <h3 class="aside-title">Filtreler</h3>
+                    <ul class="filter-list">
+                        <li><span class="text-uppercase">color:</span></li>
+                        <li><a href="#" style="color:#FFF; background-color:#8A2454;">Camelot</a></li>
+                        <li><a href="#" style="color:#FFF; background-color:#475984;">East Bay</a></li>
+                        <li><a href="#" style="color:#FFF; background-color:#BF6989;">Tapestry</a></li>
+                        <li><a href="#" style="color:#FFF; background-color:#9A54D8;">Medium Purple</a></li>
+                    </ul>
+
+                    <ul class="filter-list">
+                        <li><span class="text-uppercase">Size:</span></li>
+                        <li><a href="#">X</a></li>
+                        <li><a href="#">XL</a></li>
+                    </ul>
+
+                    <ul class="filter-list">
+                        <li><span class="text-uppercase">Price:</span></li>
+                        <li><a href="#">MIN: $20.00</a></li>
+                        <li><a href="#">MAX: $120.00</a></li>
+                    </ul>
+
+                    <ul class="filter-list">
+                        <li><span class="text-uppercase">Gender:</span></li>
+                        <li><a href="#">Men</a></li>
+                    </ul>
+
+                    <button class="primary-btn">Clear All</button>
+                </div>
+
+                <div class="aside">
+                    <h3 class="aside-title">Filter by Price</h3>
+                    <div id="price-slider"></div>
+                </div>
+
+                <div class="aside">
+                    <h3 class="aside-title">Filter By Color:</h3>
+                    <ul class="color-option">
+                        <li><a href="#" style="background-color:#475984;"></a></li>
+                        <li><a href="#" style="background-color:#8A2454;"></a></li>
+                        <li class="active"><a href="#" style="background-color:#BF6989;"></a></li>
+                        <li><a href="#" style="background-color:#9A54D8;"></a></li>
+                        <li><a href="#" style="background-color:#675F52;"></a></li>
+                        <li><a href="#" style="background-color:#050505;"></a></li>
+                        <li><a href="#" style="background-color:#D5B47B;"></a></li>
+                    </ul>
+                </div>
+
+                <div class="aside">
+                    <h3 class="aside-title">Filter By Size:</h3>
+                    <ul class="size-option">
+                        <li class="active"><a href="#">S</a></li>
+                        <li class="active"><a href="#">XL</a></li>
+                        <li><a href="#">SL</a></li>
+                    </ul>
+                </div>
+
+                <div class="aside">
+                    <h3 class="aside-title">Filter by Brand</h3>
+                    <ul class="list-links">
+                        <li><a href="#">Nike</a></li>
+                        <li><a href="#">Adidas</a></li>
+                        <li><a href="#">Polo</a></li>
+                        <li><a href="#">Lacost</a></li>
+                    </ul>
+                </div>
+
+                <div class="aside">
+                    <h3 class="aside-title">Filter by Gender</h3>
+                    <ul class="list-links">
+                        <li class="active"><a href="#">Men</a></li>
+                        <li><a href="#">Women</a></li>
+                    </ul>
+                </div>
+                <!--Popüler ürünler-->
+                <div class="aside">
+                    <h3 class="aside-title">Top Rated Product</h3>
+                    @{Html.RenderAction("TopRated", "Product");}
+                </div>
+                <!--Popüler ürünler-->
+            </div>
+
+
+
+            <div id="main" class="col-md-9">
+                <div class="store-filter clearfix">
+                    <div class="pull-left">
+                        <div class="row-filter">
+                        </div>
+                        <div class="sort-filter">
+
+                            @using (Html.BeginForm("Products", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                <span class="text-uppercase">Sort By:</span>
+                                @Html.DropDownList("ShowBy", new SelectList(ViewBag.SortBy, "Value", "Text", Model.showFilterID), new { @class = "input" });
+
+                                <span class="text-uppercase">Show:</span>
+                                @Html.DropDownList("PageBy", new SelectList(ViewBag.PageBy, "Value", "Text", Model.PageFilterID), new { @class = "input" });
+                                <button type="submit" class="btn btn-primary">Filtrele</button>
+
+                            }
+                        </div>
+                    </div>
+                    <div class="pull-right" style="margin-top:10px;font-size:16px;">
+                        <div class="page-filter">
+                            
+                            
+                        </div>
+                        <ul class="store-pages">
+                            <li><span class="text-uppercase">Page:</span></li>
+                            <li><a href="@Url.Action("Products","Product",new { page = 1})"><i class="fa fa-arrow-left"></i></a></li>
+                            <li><a href="@Url.Action("Products","Product",new { page = (Model.CurrentPage - 1)})"><i class="fa fa-caret-left"></i></a></li>
+
+                            @for (int i = Model.CurrentPage - 1; i <= Model.CurrentPage + 1; i++)
+                            {
+                                if ((i + 1) <= Model.PageCount)
+                                {
+                                    if ((i + 1) != Model.CurrentPage)
+                                    {
+                                        <li><a href="@Url.Action("Products","Product",new { page = (i+1)})">@(i + 1)</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="active">@(i + 1)</li>
+                                    }
+                                }
+                            }
+                            @{
+                                if (Model.CurrentPage + 1 > Model.PageCount)
+                                {
+                                    <li><a href="@Url.Action("Products","Product",new { page = (Model.CurrentPage)})"><i class="fa fa-caret-right"></i></a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@Url.Action("Products","Product",new { page = (Model.CurrentPage + 1)})"><i class="fa fa-caret-right"></i></a></li>
+                                }
+                            }
+
+                            <li><a href="@Url.Action("Products","Product",new { page = Model.PageCount})"><i class="fa fa-arrow-right"></i></a></li>
+
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="store">
+                    <div class="row">
+                        @{
+                            foreach (var product in Model.Products)
+                            {
+                                int Discount = 0;
+                                decimal discountPrice = 0;
+                                <div class="col-md-4 col-sm-6 col-xs-6">
+                                    <div class="product product-single">
+                                        <div class="product-thumb">
+                                            <div class="product-label">
+                                                @if ((DateTime.Now - product.AddedTime).Days < 7)
+                                                {
+                                                    <span>Yeni</span>
+                                                }
+                                                @foreach (var discount in Model.Discounts.Where(x => x.ProductID == product.ID && x.IsActive == true))
+                                                {
+                                                    Discount = discount.DiscountRate;
+                                                    <span class="sale">-@discount.DiscountRate%</span>
+                                                }
+                                            </div>
+
+                                            <img src="@Url.Content(product.Image)" alt="" style="height:250px;">
+                                        </div>
+                                        <div class="product-body">
+                                            <h3 class="product-price" style="font-size:20px">
+                                                @if (Discount != 0)
+                                                {
+                                                    discountPrice = ((product.UnitPrice / 100) * (100 - Discount));
+                                                    <span>@discountPrice</span>
+                                                    <del class="product-old-price">@product.UnitPrice</del>
+                                                }
+                                                else
+                                                {
+                                                    <span>@product.UnitPrice</span>
+                                                }
+
+                                            </h3>
+                                            <div class="product-rating">
+                                                @{
+                                                    int starAvg = 0, starSum = 0;
+                                                    int count = 0;
+                                                    foreach (var score in Model.Scores.Where(x => x.ProductID == product.ID && x.IsActive == true))
+                                                    {
+                                                        starSum += score.Score;
+                                                        count++;
+                                                    }
+                                                    if (count != 0)
+                                                    {
+                                                        starAvg = (starSum / count);
+                                                        for (int i = 0; i < starAvg; i++)
+                                                        {
+                                                            <i class="fa fa-star"></i>
+                                                        }
+                                                        for (int i = 0; i < 5 - starAvg; i++)
+                                                        {
+                                                            <i class="fa fa-star-o empty"></i>
+                                                        }
+                                                    }
+
+                                                }
+                                            </div>
+                                            <h2 class="product-name">
+                                                <a href="@Url.Action("ProductDetail","Product",new { ID = product.ID})">
+                                                    @product.ProductName
+                                                </a>
+                                            </h2>
+                                            <div class="product-btns">
+                                                @{
+                                                    bool IsFavorite = false;
+                                                    if (Model.Favorites != null)
+                                                    {
+                                                        foreach (var item in Model.Favorites)
+                                                        {
+                                                            if (item.ProductID == product.ID)
+                                                            {
+                                                                IsFavorite = true;
+                                                            }
+                                                        }
+                                                        if (IsFavorite == true)
+                                                        {
+                                                            <button class="main-btn icon-btn btnFavorite" style="color:#F8694A;border-color:#F8694A" onclick="location.href='@Url.Action("Delete","Favorite",new { ID = product.ID})'">
+                                                                <i class="fa fa-heart"></i>
+                                                            </button>
+                                                        }
+                                                        else
+                                                        {
+                                                            <button class="main-btn icon-btn btnFavorite" onclick="location.href='@Url.Action("Add","Favorite",new { ID = product.ID})'">
+                                                                <i class="fa fa-heart"></i>
+                                                            </button>
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <button class="main-btn icon-btn" id="btnFavoriteNull">
+                                                            <i class="fa fa-heart"></i>
+                                                        </button>
+                                                    }
+
+                                                }
+
+                                                @if (product.UnitInStock == 0)
+                                                {
+                                                    <button class="primary-btn add-to-cart" disabled="disabled" onclick="location.href='@Url.Action("AddToBasket","Basket",new { ID = product.ID})'">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                        Sepete Ekle
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="primary-btn add-to-cart" onclick="location.href='@Url.Action("AddToBasket","Basket",new { ID = product.ID})'">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                        Sepete Ekle
+                                                    </button>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#btnFavoriteNull").click(function () {
+            alert("Giriş yapmadan favorilere ürün ekleyemezsiniz!");
+        });
+
+        
+        $(".btnFavorite").click(function () {
+            debugger;
+            if (this.style.color === "rgb(248, 105, 74)")
+            {
+                this.style.color = "rgb(0, 0, 0)";
+                alert("Ürün favorilerden çıkarılmıştır");
+            }
+            else
+            {
+                this.style.color = "rgb(248, 105, 74)";
+                alert("Ürün favorilere eklenmiştir");
+            }
+            
+        });
+    });
+
+    
+
+</script>

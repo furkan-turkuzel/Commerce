@@ -1,0 +1,15 @@
+﻿@model CommerceSite.MVC.Models.IndexViewModel
+
+@foreach (var newCol in Model.NewCollection)
+{
+    <div class="col-md-4 col-sm-6">
+        <a class="banner banner-1" href="#">
+            <img src="@Url.Content(newCol.Image)" alt="" style="height:300px;">
+            <div class="banner-caption text-center">
+                <h2 style="color:red">Yeni Koleksiyonlar</h2>
+            </div>
+        </a>
+    </div>
+}
+
+

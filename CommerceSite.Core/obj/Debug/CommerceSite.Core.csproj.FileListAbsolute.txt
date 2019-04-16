@@ -1,0 +1,14 @@
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\bin\Debug\CommerceSite.Core.dll.config
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\bin\Debug\CommerceSite.Core.dll
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\bin\Debug\CommerceSite.Core.pdb
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\bin\Debug\EntityFramework.dll
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\bin\Debug\EntityFramework.xml
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\obj\Debug\CommerceSite.Core.csproj.CoreCompileInputs.cache
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\obj\Debug\CommerceSite.Core.csproj.CopyComplete
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\obj\Debug\CommerceSite.Core.dll
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\obj\Debug\CommerceSite.Core.pdb
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\bin\Debug\Ninject.dll
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\bin\Debug\Ninject.xml
+C:\Users\furka\OneDrive\Belgeler\Visual Studio 2017\Project\CommerceSite\CommerceSite.Core\obj\Debug\CommerceSite.Core.csprojAssemblyReference.cache

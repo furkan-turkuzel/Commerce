@@ -1,0 +1,138 @@
+﻿@model CommerceSite.MVC.Models.BasketViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="~/Content/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="~/Content/css/slick.css" />
+<link type="text/css" rel="stylesheet" href="~/Content/css/slick-theme.css" />
+<link type="text/css" rel="stylesheet" href="~/Content/css/nouislider.min.css" />
+<link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
+<link type="text/css" rel="stylesheet" href="~/Content/css/style.css" />
+<script src="~/Scripts/angular.min.js"></script>
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <form id="checkout-form" class="clearfix">
+                <div class="col-md-12">
+                    <div class="order-summary clearfix">
+                        <div class="section-title">
+                            <h3 class="title">Sepetinizdeki Ürünler</h3>
+                        </div>
+                        <table class="shopping-cart-table table">
+                            <thead>
+                                <tr>
+                                    <th>Ürün</th>
+                                    <th></th>
+                                    <th class="text-center">Fiyatı</th>
+                                    <th class="text-center">Adet</th>
+                                    <th class="text-center">Toplam</th>
+                                    <th class="text-center">Favoriye Ekle</th>
+                                    <th class="text-right">Kaldır</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var item in Model.Basket.addedProduct)
+                                    {
+                                        <tr>
+                                            <td class="thumb"><img src="@Url.Content(item.product.Image)" alt=""></td>
+                                            <td class="details">
+                                                <a href="@Url.Action("ProductDetail","Product")">@item.product.ProductName</a>
+                                            </td>
+
+                                            @{
+                                                decimal Discount = 0;
+                                                decimal discountPrice = 0;
+                                                if (item.product.Discounts.Count != 0)
+                                                {
+                                                    foreach (var discount in Model.Discounts.Where(x => x.ProductID == item.product.ID && x.IsActive == true))
+                                                    {
+                                                        Discount = discount.DiscountRate;
+                                                        discountPrice = ((item.product.UnitPrice / 100) * (100 - Discount));
+
+                                                        <td class="price text-center"><strong id="discount">@discountPrice</strong><br><del class="font-weak"><small>@item.product.UnitPrice</small></del></td>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <td class="price text-center"><strong>@item.product.UnitPrice</strong></td>
+                                                }
+
+                                                <td class="qty text-center"><input class="input" type="number" value="@item.Quantity" min="1" id="quantity"></td>
+                                                <td class="total text-center">
+                                                    <strong class="primary-color">
+                                                        @{
+                                                            var quantity = item.Quantity;
+                                                            var unitPrice = discountPrice == 0 ? item.product.UnitPrice : discountPrice;
+                                                            var total = quantity * unitPrice;
+                                                            <span id="totalPrice">@total</span>
+                                                        }
+                                                    </strong>
+                                                </td>
+
+                                            }
+
+
+                                            <td style="text-align:center">
+                                                <a href="@Url.Action("Add", "Favorite",new { ID = item.product.ID})" class="btn btn-primary" style="width:100px" id="btnFavorite">
+                                                    Ekle
+                                                </a>
+                                            </td>
+                                            <td class="text-right">
+                                                <a href="@Url.Action("RemoveToBasket","Basket",new { ID = item.product.ID})" class="main-btn icon-btn">
+                                                    <i class="fa fa-close"></i>
+                                                </a>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                        <div class="pull-right">
+                            <a href="@Url.Action("Index","Complete")" class="primary-btn">Alışverişi Tamamla</a>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+
+<script src="~/Scripts/js/jquery.min.js"></script>
+<script src="~/Scripts/js/bootstrap.min.js"></script>
+<script src="~/Scripts/js/slick.min.js"></script>
+<script src="~/Scripts/js/nouislider.min.js"></script>
+<script src="~/Scripts/js/jquery.zoom.min.js"></script>
+<script src="~/Scripts/js/main.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#btnFavorite").click(function () {
+            alert("Ürün favorilerinize başarıyla eklenmiştir");
+        });
+
+        $("#quantity").change(function () {
+            debugger;
+            var quantityInput = $("#quantity").val();
+            var unitPriceInput = document.getElementById("discount").innerHTML;
+
+            var quantity = Number(quantityInput);
+            var unitPrice = Number(parseFloat(unitPriceInput).toFixed(2));
+
+            var total = quantity * unitPrice;
+
+            document.getElementById("totalPrice").innerHTML = total.toFixed(2).replace(".",",");
+        });
+    });
+</script>
+
+

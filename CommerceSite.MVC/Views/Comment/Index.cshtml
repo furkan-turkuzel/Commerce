@@ -1,0 +1,84 @@
+﻿@model CommerceSite.MVC.Models.CommentViewModel
+
+
+@using (Html.BeginForm("SentMessage", "Comment", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="product-reviews">
+                @{
+                    if (Model.Comments.Count != 0)
+                    {
+                        foreach (var item in Model.Comments)
+                        {
+                            <div class="single-review">
+                                <div class="review-heading">
+                                    <div><a href="#"><i class="fa fa-user-o"></i> @item.Username</a></div>
+                                    <div><a href="#"><i class="fa fa-clock-o"></i> @item.SentDate</a></div>
+
+                                </div>
+                                <div class="review-body">
+                                    <p>
+                                        @item.Writing
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <h3>Hiç Yorum Yok</h3>
+                    }
+
+                }
+
+
+                <ul class="reviews-pages">
+                    <li class="active">1</li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#"><i class="fa fa-caret-right"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4 class="text-uppercase">Yorumunuzu yazınız</h4>
+            <p>Mail adresiniz başkası tarafından görülmeyecektir.</p>
+            <div class="review-form">
+
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.Username, new { @class = "input", placeholder = "Adınız" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.Mail, new { @class = "input", placeholder = "Mail Adresiniz" })
+                </div>
+                <div class="form-group">
+                    @Html.TextAreaFor(x => x.Writing, new { @class = "input", placeholder = "Yorumunuz" })
+                </div>
+                <div class="form-group">
+                    <div class="input-rating">
+                        <strong class="text-uppercase">Puanınız :  </strong>
+                        <div class="stars">
+                            <input type="radio" id="star5" name="rating" value="5" /><label for="star5"></label>
+                            <input type="radio" id="star4" name="rating" value="4" /><label for="star4"></label>
+                            <input type="radio" id="star3" name="rating" value="3" /><label for="star3"></label>
+                            <input type="radio" id="star2" name="rating" value="2" /><label for="star2"></label>
+                            <input type="radio" id="star1" name="rating" value="1" /><label for="star1"></label>
+                        </div>
+                    </div>
+                </div>
+
+                @if(ViewBag.Message != null)
+                {
+                <div class="alert alert-danger" role="alert" style="margin:10px">
+                    @ViewBag.Message
+                </div>
+                }
+                @Html.HiddenFor(model => model.ProductID)
+                <button type="submit" class="primary-btn">Gönder</button>
+
+
+            </div>
+        </div>
+    </div>
+}

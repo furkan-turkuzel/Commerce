@@ -1,0 +1,77 @@
+﻿@model CommerceSite.MVC.Models.CategoriesViewModel
+<div class="category-nav show-on-click">
+    <span class="category-header">Elektronik <i class="fa fa-list"></i></span>
+    <ul class="category-list">
+        @foreach (var category in Model.Categories)
+        {
+            if (category.SubCategory == 59)
+            {
+                <li class="dropdown side-dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">@category.CategoryName<i class="fa fa-angle-right"></i></a>
+                    <div class="custom-menu">
+                        <div class="row">
+
+                            <div class="col-md-10">
+                                <ul class="list-links">
+                                    <li>
+                                        <h3 class="list-links-title">Alt Kategoriler</h3>
+                                    </li>
+                                    <hr />
+                                    @foreach (var subItem in Model.Categories.Where(x => x.SubCategory == category.ID))
+                                    {
+                                        <li><a href="@Url.Action("Products","Product",new {ID = subItem.ID})">@subItem.CategoryName</a></li>
+                                        <hr />
+                                    }
+                                </ul>
+                                <hr class="hidden-md hidden-lg">
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
+            }
+        }
+    </ul>
+</div>
+
+
+<div class="menu-nav">
+    <span class="menu-header">Menu <i class="fa fa-bars"></i></span>
+    <ul class="menu-list">
+        @foreach (var category in Model.Categories.Where(x => x.SubCategory == 0 && x.ID != 59))
+        {
+            <li class="dropdown mega-dropdown full-width">
+                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">@category.CategoryName <i class="fa fa-caret-down"></i></a>
+                <div class="custom-menu">
+                    <div class="row">
+                        @{
+                            int count = 0;
+                            int lastID = 0;
+                            for (int i = 0; i < 3; i++)
+                            {
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Alt Kategoriler</h3>
+                                        </li>
+                                        @foreach (var sub in Model.Categories.Where(x => x.SubCategory == category.ID && x.ID > lastID))
+                                        {
+                                            <li><a href="@Url.Action("Products","Product")">@sub.CategoryName</a></li>
+                                            lastID = sub.ID;
+                                            count++;
+                                            if (count % (Model.Categories.Where(x => x.SubCategory == category.ID).Count() / 3) == 0)
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    </ul>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>

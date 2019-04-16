@@ -1,0 +1,47 @@
+﻿@model CommerceSite.MVC.Models.BasketSummaryViewModel
+
+<li class="header-cart dropdown default-dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+        <div class="header-btns-icon">
+            <i class="fa fa-shopping-cart"></i>
+            <span class="qty">@Model.Basket.addedProduct.Count</span>
+        </div>
+        <strong class="text-uppercase">Sepetim :</strong>
+        <br>
+        <span>@Model.Basket.total</span>
+    </a>
+    <div class="custom-menu">
+        <div id="shopping-cart">
+            <div class="shopping-cart-list">
+                @foreach (var item in Model.Basket.addedProduct)
+                {
+                    <div class="product product-widget">
+                        <div class="product-thumb">
+                            <img src="@Url.Content(item.product.Image)" alt="">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-price">@item.product.UnitPrice @if (item.Quantity > 0) { <span class="qty">x @item.Quantity</span>}</h3>
+                            <h2 class="product-name"><a href="@Url.Action("ProductDetail","Product")">@item.product.ProductName</a></h2>
+                        </div>
+                        <button onclick="location.href='@Url.Action("RemoveToBasket","Basket",new { ID = item.product.ID})'" class="cancel-btn"><i class="fa fa-trash"></i></button>
+                    </div>
+                }
+            </div>
+            <div class="shopping-cart-btns">
+
+                @if (Model.Basket.addedProduct.Count != 0)
+                {
+                    <a href="@Url.Action("Index","Basket")" class="main-btn">Sepeti Gör</a>
+                    <a href="@Url.Action("Index","Complete")" class="primary-btn">
+                        Satın Al
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                }
+                else
+                {
+                    <span>Şu an sepetinizde hiçbir şey yok</span>
+                }
+            </div>
+        </div>
+    </div>
+</li>

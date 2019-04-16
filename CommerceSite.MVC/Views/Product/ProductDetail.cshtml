@@ -1,0 +1,345 @@
+﻿@model CommerceSite.MVC.Models.ProductDetailViewModel
+@{
+    ViewBag.Title = "ProductDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="breadcrumb">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Products</a></li>
+            <li><a href="#">Category</a></li>
+            <li class="active">Product Name Goes Here</li>
+        </ul>
+    </div>
+</div>
+
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!--  Product Details -->
+            <div class="product product-details clearfix">
+                <div class="col-md-6">
+                    <div id="product-main-view">
+                        <div class="product-view">
+                            <img src="@Url.Content(Model.ProductImage)" alt="">
+                        </div>
+                    </div>
+                    <div id="product-view">
+                        <div class="product-view">
+                            <img src="@Url.Content(Model.ProductImage)" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="product-body">
+                        <div class="product-label">
+                            @if ((DateTime.Now - Model.AddedTime).Days < 7)
+                            {
+                                <span>Yeni</span>
+                            }
+                            @if (Model.DiscountRate != 0)
+                            {
+                                <span class="sale">-@Model.DiscountRate%</span>
+                            }
+
+                        </div>
+                        <h2 class="product-name">@Model.ProductName</h2>
+
+                        <h3 class="product-price" style="font-size:20px">
+                            @if (Model.DiscountRate != 0)
+                            {
+                                var discountPrice = ((Model.UnitPrice / 100) * (100 - Model.DiscountRate));
+                                <span>@discountPrice</span>
+                                <del class="product-old-price">@Model.UnitPrice</del>
+                            }
+                            else
+                            {
+                                <span>@Model.UnitPrice</span>
+                            }
+
+                        </h3>
+
+                        <div>
+                            <div class="product-rating">
+                                @{
+                                    for (int i = 0; i < Model.ProductScore; i++)
+                                    {
+                                        <i class="fa fa-star"></i>
+                                    }
+                                    for (int i = 0; i < 5 - Model.ProductScore; i++)
+                                    {
+                                        <i class="fa fa-star-o empty"></i>
+                                    }
+
+                                }
+                            </div>
+                        </div>
+                        <p>
+                            <strong>Stok Durumu:</strong>
+                            @{
+                                if (Model.UnitInStock != 0)
+                                {
+                                    <span>Bu üründen stokta @Model.UnitInStock adet bulunmaktadır.</span>
+                                }
+                                else
+                                {
+                                    <h4>Bu üründen stoklarımızda kalmamıştır.</h4>
+                                }
+                            }
+
+
+                        </p>
+                        <p><strong>Satıcı:</strong> E-SHOP</p>
+                        <p>
+                            @{
+                                if (Model.Description.Length > 100)
+                                {
+                                    Model.Description.Substring(0, 100);
+                                }
+                                else
+                                {
+                                    Model.Description.ToString();
+                                }
+                            }
+                        </p>
+                        <div class="product-options">
+                            <ul class="size-option">
+                                <li><span class="text-uppercase">Size:</span></li>
+                                <li class="active"><a href="#">S</a></li>
+                                <li><a href="#">XL</a></li>
+                                <li><a href="#">SL</a></li>
+                            </ul>
+                            <ul class="color-option">
+                                <li><span class="text-uppercase">Color:</span></li>
+                                <li class="active"><a href="#" style="background-color:#475984;"></a></li>
+                                <li><a href="#" style="background-color:#8A2454;"></a></li>
+                                <li><a href="#" style="background-color:#BF6989;"></a></li>
+                                <li><a href="#" style="background-color:#9A54D8;"></a></li>
+                            </ul>
+                        </div>
+
+                        <div class="product-btns">
+                            <div class="qty-input">
+                                <span class="text-uppercase">QTY: </span>
+                                <input class="input" type="number" min="1">
+                            </div>
+                            <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                            <div class="pull-right">
+                                @{
+                                    if (Session["user"] != null)
+                                    {
+                                        if (Model.IsFavorite == true)
+                                        {
+                                            <button class="main-btn icon-btn btnFavorite" style="color:#F8694A;border-color:#F8694A" onclick="location.href='@Url.Action("Delete","Favorite",new { ID = Model.ID})'">
+                                                <i class="fa fa-heart"></i>
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="main-btn icon-btn btnFavorite" onclick="location.href='@Url.Action("Add","Favorite",new { ID = Model.ID})'">
+                                                <i class="fa fa-heart"></i>
+                                            </button>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <button class="main-btn icon-btn" id="btnFavoriteNull">
+                                            <i class="fa fa-heart"></i>
+                                        </button>
+                                    }
+
+                                }
+
+                                <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+                                <button class="main-btn icon-btn"><i class="fa fa-share-alt"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="product-tab">
+                        <ul class="tab-nav">
+                            <li class="active"><a data-toggle="tab" href="#tab1">Ürün Açıklaması</a></li>
+                            <li><a data-toggle="tab" href="#tab1">Detaylar</a></li>
+                            <li><a data-toggle="tab" href="#tab2">Yorumlar(@Model.Comments.Count)</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab1" class="tab-pane fade in active">
+                                <p>
+                                    @Model.Description.ToString()
+                                </p>
+                            </div>
+                            <div id="tab2" class="tab-pane fade in">
+                                @{ Html.RenderAction("Index", "Comment",new { ID = Model.ID});}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /Product Details -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- section title -->
+            <div class="col-md-12">
+                <div class="section-title">
+                    <h2 class="title">Picked For You</h2>
+                </div>
+            </div>
+            <!-- section title -->
+            <!-- Product Single -->
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <div class="product product-single">
+                    <div class="product-thumb">
+                        <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
+                        <img src="./img/product04.jpg" alt="">
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-price">$32.50</h3>
+                        <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o empty"></i>
+                        </div>
+                        <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
+                        <div class="product-btns">
+                            <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                            <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+                            <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Product Single -->
+            <!-- Product Single -->
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <div class="product product-single">
+                    <div class="product-thumb">
+                        <div class="product-label">
+                            <span>New</span>
+                        </div>
+                        <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
+                        <img src="./img/product03.jpg" alt="">
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-price">$32.50</h3>
+                        <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o empty"></i>
+                        </div>
+                        <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
+                        <div class="product-btns">
+                            <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                            <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+                            <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Product Single -->
+            <!-- Product Single -->
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <div class="product product-single">
+                    <div class="product-thumb">
+                        <div class="product-label">
+                            <span class="sale">-20%</span>
+                        </div>
+                        <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
+                        <img src="./img/product02.jpg" alt="">
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
+                        <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o empty"></i>
+                        </div>
+                        <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
+                        <div class="product-btns">
+                            <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                            <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+                            <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Product Single -->
+            <!-- Product Single -->
+            <div class="col-md-3 col-sm-6 col-xs-6">
+                <div class="product product-single">
+                    <div class="product-thumb">
+                        <div class="product-label">
+                            <span>New</span>
+                            <span class="sale">-20%</span>
+                        </div>
+                        <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
+                        <img src="./img/product01.jpg" alt="">
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
+                        <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o empty"></i>
+                        </div>
+                        <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
+                        <div class="product-btns">
+                            <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                            <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+                            <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Product Single -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#btnFavoriteNull").click(function () {
+            alert("Giriş yapmadan favorilere ürün ekleyemezsiniz!");
+        });
+
+
+        $(".btnFavorite").click(function () {
+            debugger;
+            if (this.style.color === "rgb(248, 105, 74)") {
+                this.style.color = "rgb(0, 0, 0)";
+                alert("Ürün favorilerden çıkarılmıştır");
+            }
+            else {
+                this.style.color = "rgb(248, 105, 74)";
+                alert("Ürün favorilere eklenmiştir");
+            }
+
+        });
+    });
+
+</script>

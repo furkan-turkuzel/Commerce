@@ -1,0 +1,16 @@
+﻿@model CommerceSite.MVC.Models.UserViewModel
+
+<li class="header-account dropdown default-dropdown">
+    <div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
+        <div class="header-btns-icon">
+            <i class="fa fa-user-o"></i>
+        </div>
+        <strong class="text-uppercase">Hesabım <i class="fa fa-caret-down"></i></strong>
+    </div>
+    <ul class="custom-menu">
+        <li><a href="@Url.Action("Setting","User")"><i class="fa fa-user-o"></i>Hesabım</a></li>
+        <li><a href="@Url.Action("Index","Favorite")"><i class="fa fa-heart-o"></i>Favorilerim</a></li>
+        <li><a href="@Url.Action("Checkout","Product")"><i class="fa fa-check"></i>Siparişlerim</a></li>
+        <li><a href="@Url.Action("Logout","User")"><i class="fa fa-user-o"></i>Çıkış Yap</a></li>
+    </ul>
+</li>

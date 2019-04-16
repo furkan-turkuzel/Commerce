@@ -1,0 +1,115 @@
+﻿@model CommerceSite.MVC.Models.FavoriteViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="~/Content/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="~/Content/css/slick.css" />
+<link type="text/css" rel="stylesheet" href="~/Content/css/slick-theme.css" />
+<link type="text/css" rel="stylesheet" href="~/Content/css/nouislider.min.css" />
+<link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
+<link type="text/css" rel="stylesheet" href="~/Content/css/style.css" />
+
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <form id="checkout-form" class="clearfix">
+                <div class="col-md-12">
+                    <div class="order-summary clearfix">
+                        <div class="section-title">
+                            <h3 class="title">Favorileriniz</h3>
+                        </div>
+                        <table class="shopping-cart-table table">
+                            <thead>
+                                <tr>
+                                    <th>Ürün</th>
+                                    <th></th>
+                                    <th class="text-center">Fiyatı</th>
+                                    <th class="text-center">Sepete Ekle</th>
+                                    <th class="text-right">Kaldır</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (Model.Favorites.Count == 0)
+                                    {
+                                        <h2>
+                                            Favorilerinizde hiç ürün bulunmamaktadır.
+                                        </h2>
+
+                                    }
+                                    else
+                                    {
+                                        foreach (var item in Model.Favorites)
+                                        {
+                                            <tr>
+                                                <td class="thumb"><img src="@Url.Content(item.Product.Image)" alt=""></td>
+                                                <td class="details">
+                                                    <a href="@Url.Action("ProductDetail","Product")">@item.Product.ProductName</a>
+                                                </td>
+
+                                                @{
+                                                    if (item.Product.Discounts.Count != 0)
+                                                    {
+                                                        foreach (var discount in Model.Discounts.Where(x => x.ProductID == item.Product.ID && x.IsActive == true))
+                                                        {
+                                                            var Discount = discount.DiscountRate;
+                                                            var discountPrice = ((item.Product.UnitPrice / 100) * (100 - Discount));
+
+                                                            <td class="price text-center"><strong>@discountPrice</strong><br><del class="font-weak"><small>@item.Product.UnitPrice</small></del></td>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <td class="price text-center"><strong>@item.Product.UnitPrice</strong></td>
+                                                    }
+
+                                                }
+
+
+                                                <td style="text-align:center">
+                                                    <a href="@Url.Action("AddToBasket", "Favorite",new { ID = item.ID})" class="btn btn-primary" style="width:100px" id="btnBasket">
+                                                        Ekle
+                                                    </a>
+                                                </td>
+                                                <td class="text-right">
+                                                    <a href="@Url.Action("DeleteFavorite","Favorite",new { ID = item.ID})" class="main-btn icon-btn">
+                                                        <i class="fa fa-close"></i>
+                                                    </a>
+                                            </tr>
+                                        }
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                        
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+
+<script src="~/Scripts/js/jquery.min.js"></script>
+<script src="~/Scripts/js/bootstrap.min.js"></script>
+<script src="~/Scripts/js/slick.min.js"></script>
+<script src="~/Scripts/js/nouislider.min.js"></script>
+<script src="~/Scripts/js/jquery.zoom.min.js"></script>
+<script src="~/Scripts/js/main.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#btnBasket").click(function () {
+            alert("Ürün sepetinize başarıyla eklenmiştir");
+        });
+    });
+</script>

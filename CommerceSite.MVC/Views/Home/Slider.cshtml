@@ -1,0 +1,17 @@
+﻿@model CommerceSite.MVC.Models.SliderViewModel
+
+<div id="home-slick">
+
+    @foreach (var slider in Model.Slider)
+    {
+        <div class="banner banner-1">
+            <img src="@Url.Content(slider.Image)" alt="">
+            <div class="banner-caption text-center">
+                <h1>@slider.Title</h1>
+                <h3 class="white-color font-weak">@slider.Writing</h3>
+                <a href="@Url.Action("ProductDetail","Product")" class="primary-btn">Şimdi Gör</a>
+            </div>
+        </div>
+    }
+
+</div>
